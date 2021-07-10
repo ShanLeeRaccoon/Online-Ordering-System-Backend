@@ -24,8 +24,11 @@ public class ItemService {
     }
 
     //get Item by id
-    public Item findItemById(Long id) { return repo.findById(id).get(); }
+    public Item getItemById(Long id) { return repo.findById(id).get(); }
 
     //Delete Item by id
     public void deleteItemById(long id) { repo.deleteById(id); }
+
+    //Modify Item by Id
+
 }

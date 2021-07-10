@@ -26,7 +26,7 @@ public class ItemController {
     @GetMapping("/items/{id}")
     public ResponseEntity< Item > getItem(@PathVariable Long id) {
         try {
-            Item item= service.findItemById(id);
+            Item item= service.getItemById(id);
             return new ResponseEntity<Item>(item, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
@@ -36,4 +36,20 @@ public class ItemController {
     //Post new Item
     @PostMapping("/items")
     public void addItem(@RequestBody Item item) { service.save(item); };
+
+    //Put an item by id
+    @PutMapping("/customers/{id}")
+    public ResponseEntity<Item>updateCustomer(@PathVariable Long id,@RequestBody Item item) {
+        try {
+            Item existItem = service.getItemById(id);
+
+//            existItem.setName(item.getName());
+
+
+            Item updatedItem = service.save(existItem);
+            return ResponseEntity.ok(updatedItem);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
