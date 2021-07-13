@@ -4,6 +4,7 @@ import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,6 +30,10 @@ public class ItemService {
     //Delete Item by id
     public void deleteItemById(long id) { repo.deleteById(id); }
 
-    //Modify Item by Id
+//    public void store(MultipartFile file){
+//        String filename = file.getOriginalFilename();
+//        Item item = new Item();
+//        item.setImg();
+//    }
 
 }

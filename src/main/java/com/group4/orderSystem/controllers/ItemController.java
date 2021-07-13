@@ -38,13 +38,18 @@ public class ItemController {
     public void addItem(@RequestBody Item item) { service.save(item); };
 
     //Put an item by id
-    @PutMapping("/customers/{id}")
+    @PutMapping("/items/{id}")
     public ResponseEntity<Item>updateCustomer(@PathVariable Long id,@RequestBody Item item) {
         try {
             Item existItem = service.getItemById(id);
 
-//            existItem.setName(item.getName());
-
+            existItem.setTitle(item.getTitle());
+            existItem.setPrice(item.getPrice());
+            existItem.setInStock(item.getInStock());
+            existItem.setDescription(item.getDescription());
+            existItem.setGenre(item.getGenre());
+            existItem.setImg(item.getImg());
+            existItem.setSoldQty(item.getSoldQty());
 
             Item updatedItem = service.save(existItem);
             return ResponseEntity.ok(updatedItem);
