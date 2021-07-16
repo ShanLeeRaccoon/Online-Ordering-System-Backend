@@ -18,4 +18,12 @@ public class UserService {
     //Find all items from database
     public List<User> listAllUsers() { return repo.findAll(); };
 
+    // Get a user by Id
+    public User getUserById(Long id) { return repo.findById(id).get(); };
+
+    // Save new user to db
+    public User save(User user) {
+        repo.save(user);
+        return user;
+    }
 }
