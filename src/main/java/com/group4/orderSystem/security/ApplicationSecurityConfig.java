@@ -27,11 +27,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/items", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/*").hasRole(BUYER.name())
                 .anyRequest()
                 .authenticated()
-                .and();
+                .and()
+                .httpBasic();
     }
 
     @Override
