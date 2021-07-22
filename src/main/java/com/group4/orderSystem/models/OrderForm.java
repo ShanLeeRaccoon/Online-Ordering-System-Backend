@@ -22,10 +22,12 @@ public class OrderForm {
     private Long id;
     private Integer quantity;
     private String status;
+    private Float total;
+
     @Transient
     private LocalDate purchaseTime;
-    @Transient
-    private Float total;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
@@ -40,17 +42,19 @@ public class OrderForm {
     public OrderForm() {
     }
 
-    public OrderForm(Long id, Integer quantity, String status, Item item, User user) {
+    public OrderForm(Long id, Integer quantity, String status, Float total, Item item, User user) {
         this.id = id;
         this.quantity = quantity;
         this.status = status;
+        this.total = total;
         this.item = item;
         this.user = user;
     }
 
-    public OrderForm(Integer quantity, String status, Item item, User user) {
+    public OrderForm(Integer quantity, String status, Float total, Item item, User user) {
         this.quantity = quantity;
         this.status = status;
+        this.total = total;
         this.item = item;
         this.user = user;
     }
@@ -88,7 +92,7 @@ public class OrderForm {
     }
 
     public Float getTotal() {
-        return this.quantity * item.getPrice();
+        return total;
     }
 
     public void setTotal(Float total) {
