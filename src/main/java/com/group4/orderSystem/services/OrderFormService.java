@@ -15,6 +15,16 @@ public class OrderFormService {
     @Autowired
     OrderFormRepository repo;
 
+//    Find all orders from database
     public List<OrderForm> listAllOrders() { return repo.findAll(); };
+
+//    Get order by id
+    public OrderForm getOrderById(Long id) { return repo.findById(id).get();}
+
+//    Post a new order to database
+    public OrderForm save(OrderForm order) {
+        repo.save(order);
+        return order;
+    }
 
 }
