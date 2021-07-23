@@ -10,14 +10,11 @@ import java.util.List;
 
 
 @Service
+@Transactional
 public class OrderFormService {
-
-    private final OrderFormRepository repo;
-
     @Autowired
-    public OrderFormService(OrderFormRepository repo) {this.repo = repo;}
+    OrderFormRepository repo;
 
     public List<OrderForm> listAllOrders() { return repo.findAll(); };
-
 
 }

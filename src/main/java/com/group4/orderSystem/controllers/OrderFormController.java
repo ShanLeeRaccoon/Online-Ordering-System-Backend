@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping(path = "orderForms")
+@RequestMapping
 public class OrderFormController {
+    @Autowired
+    private OrderFormService service;
+
+    @GetMapping("/orders")
+    public List<OrderForm> listOrder() { return service.listAllOrders(); };
 
 
-    private final OrderFormService service;
-
-    public OrderFormController(OrderFormService service) { this.service = service; }
-    @GetMapping
-    public List<OrderForm> listAllOrders() { return service.listAllOrders();};
 }
