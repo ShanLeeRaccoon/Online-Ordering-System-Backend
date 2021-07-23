@@ -18,7 +18,7 @@ public class OrderFormController {
 
 //    Get all orders
     @GetMapping("/orders")
-    public List<OrderForm> listOrder() { return service.listAllOrders(); };
+    public List<OrderForm> listOrder() { return service.listAllOrders(); }
 
 //    Get order by id
     @GetMapping("/order/{id}")
@@ -27,14 +27,39 @@ public class OrderFormController {
             OrderForm order = service.getOrderById(id);
             return new ResponseEntity<OrderForm>(order, HttpStatus.OK);
         } catch (NoSuchElementException e){
-            return new ResponseEntity<OrderForm>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
 //    Post new order
     @PostMapping("/orders")
-    public void addOrder(@RequestBody OrderForm order) { service.save(order); };
+    public void addOrder(@RequestBody OrderForm order) { service.save(order); }
 
+// Delete an order
+    @DeleteMapping("/order/{id}")
+    public ResponseEntity< OrderForm > deleteOrder(@PathVariable("id")Long id){
+        try{
+            OrderForm order = service.getOrderById(id);
+            service.deleteOrder(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
+    }
 
+    @PutMapping("order/{id}")
+    public ResponseEntity<OrderForm>updateOrder(@PathVariable Long id, @RequestBody OrderForm order){
+        try{
+            OrderForm existOrder = service.getOrderById(id);
+
+            existOrder.setStatus(order.getStatus());
+            existOrder.setQuantity(order.getQuantity());
+
+            OrderForm updatedOrder = service.save(existOrder);
+            return ResponseEntity.ok(updatedOrder);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
