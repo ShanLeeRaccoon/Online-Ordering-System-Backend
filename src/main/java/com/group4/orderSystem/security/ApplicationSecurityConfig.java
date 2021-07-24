@@ -1,8 +1,11 @@
 package com.group4.orderSystem.security;
 
+import com.group4.orderSystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,13 +19,15 @@ import static com.group4.orderSystem.security.ApplicationUserRole.*;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder){
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, UserService userService){
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
+    private final UserService userService;
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
@@ -32,9 +37,21 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .formLogin();
     }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {

@@ -1,7 +1,6 @@
 package com.group4.orderSystem.controllers;
 
 
-import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.models.User;
 import com.group4.orderSystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
