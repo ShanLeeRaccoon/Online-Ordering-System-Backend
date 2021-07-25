@@ -31,7 +31,5 @@ public class UserController {
         }
     }
 
-    //Post new User
-    @PostMapping("/users")
-    public void addUser(@RequestBody User user) { service.save(user); };
+
 }
