@@ -1,52 +1,102 @@
 package com.group4.orderSystem.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.group4.orderSystem.security.ApplicationUserRole;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table (name = "user")
-public class User {
+public class User implements UserDetails {
+
     @Id
-    Long id;
+    @SequenceGenerator(
+            name = "buyer_sequence",
+            sequenceName = "buyer_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyer_generator")
+    @Column(nullable = false, updatable = false)
+    private Long id;
 
     @Column
-    String email;
+    private String email;
 
     @Column
-    String name;
+    private String name;
 
-    public User() {
-    }
+    @Column
+    private String username;
 
-    public User(Long id, String email, String name) {
-        this.id = id;
+    @Column
+    private String password;
+
+    @Column
+    private boolean locked;
+
+    @Column
+    private boolean enabled;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ApplicationUserRole appUserRole;
+
+    public User(String email, String name, String username, String password, boolean locked, boolean enabled, ApplicationUserRole appUserRole) {
         this.email = email;
         this.name = name;
+        this.username = username;
+        this.password = password;
+        this.locked = locked;
+        this.enabled = enabled;
+        this.appUserRole = appUserRole;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(appUserRole.name());
+        return Collections.singletonList(simpleGrantedAuthority);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+
     }
 }
