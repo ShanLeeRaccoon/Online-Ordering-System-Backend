@@ -53,13 +53,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole appUserRole;
 
-    public User(String email, String name, String username, String password, boolean locked, boolean enabled, ApplicationUserRole appUserRole) {
+    public User(String email, String name, String username, String password, ApplicationUserRole appUserRole) {
         this.email = email;
         this.name = name;
         this.username = username;
         this.password = password;
-        this.locked = locked;
-        this.enabled = enabled;
         this.appUserRole = appUserRole;
     }
 
