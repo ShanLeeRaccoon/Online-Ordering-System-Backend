@@ -24,11 +24,11 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder encoder;
 
     UserRepository repo;
-//    //Find all users from database
-//    public List<User> listAllUsers() { return repo.findAll(); };
-//
-//    // Get a user by Id
-//    public User getUserById(Long id) { return repo.findById(id).get(); };
+    //Find all users from database
+    public List<User> listAllUsers() { return repo.findAll(); };
+
+    // Get a user by Id
+    public User getUserById(Long id) { return repo.findById(id).get(); };
 
 
     public String registerUser(User user){
