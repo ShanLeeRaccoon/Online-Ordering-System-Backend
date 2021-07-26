@@ -33,7 +33,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/orders/*").permitAll()
+                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/orders/*","/orders", "/items/*", "/items").permitAll()
                 .antMatchers("/*").hasRole(BUYER.name())
                 .anyRequest()
                 .authenticated()
