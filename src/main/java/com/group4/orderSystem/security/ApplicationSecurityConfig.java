@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import static com.group4.orderSystem.security.ApplicationUserRole.*;
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,23 +23,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, UserService userService){
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
 
     private final UserService userService;
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/orders/*","/orders", "/items/*", "/items").permitAll()
-                .antMatchers("/*").hasRole(BUYER.name())
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin();
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/order/*", "/orders",
+                        "/items/*", "/items")
+                .permitAll().antMatchers("/*").hasRole(BUYER.name()).anyRequest().authenticated().and().formLogin();
     }
 
     @Override
@@ -47,28 +44,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
     }
+
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        UserDetails user1 = User.builder()
-                .username("user1")
-                .password(passwordEncoder.encode("password"))
-                .roles(ApplicationUserRole.BUYER.name())
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles(ApplicationUserRole.ADMIN.name())
-                .build();
-        return new InMemoryUserDetailsManager(
-                user1,
-                admin
-        );
+        UserDetails user1 = User.builder().username("user1").password(passwordEncoder.encode("password"))
+                .roles(ApplicationUserRole.BUYER.name()).build();
+        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin"))
+                .roles(ApplicationUserRole.ADMIN.name()).build();
+        return new InMemoryUserDetailsManager(user1, admin);
     }
 }
