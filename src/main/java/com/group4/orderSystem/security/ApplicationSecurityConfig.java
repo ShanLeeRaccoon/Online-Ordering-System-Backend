@@ -33,7 +33,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/orders/*", "/orders",
+                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/order/*", "/orders",
                         "/items/*", "/items")
                 .permitAll().antMatchers("/*").hasRole(BUYER.name()).anyRequest().authenticated().and().formLogin();
     }
