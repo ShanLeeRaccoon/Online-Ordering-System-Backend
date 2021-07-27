@@ -47,7 +47,7 @@ public class User implements UserDetails {
     private boolean locked;
 
     @Column
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -84,7 +84,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return true;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
 
     }
 }
