@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.services.ItemService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -55,6 +57,19 @@ public class ItemController {
             Item updatedItem = service.save(existItem);
             return ResponseEntity.ok(updatedItem);
         } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity <Map< String, Boolean >> deleteItem(@PathVariable Long id)  {
+        try{
+            Item item = service.getItemById(id);
+            service.deleteItemById(id);
+            Map< String, Boolean > response = new HashMap< >();
+            response.put("deleted", Boolean.TRUE);
+            return ResponseEntity.ok(response);
+        }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
