@@ -36,6 +36,19 @@ public class ItemController {
         }
     }
 
+    @GetMapping("/items/title={title}")
+    public List<Item> getItemsByTitle(@PathVariable String title) { return service.getItemsByTitle(title); }
+
+//    @GetMapping("/items/price={price}")
+//    public List<Item> getItemsByPrice(@PathVariable float price) {
+//        return service.getItemsByPrice(price);
+//    }
+
+    @GetMapping("/items/genre={genre}")
+    public List<Item> getItemsByPrice(@PathVariable String genre) {
+        return service.getItemsByGenre(genre);
+    }
+
     //Post new Item
     @PostMapping("/items")
     public void addItem(@RequestBody Item item) { service.save(item); };

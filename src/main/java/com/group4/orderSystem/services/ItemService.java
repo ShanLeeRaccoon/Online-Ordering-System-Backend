@@ -27,6 +27,15 @@ public class ItemService {
     //get Item by id
     public Item getItemById(Long id) { return repo.findById(id).get(); }
 
+    // Get Item by title
+    public List<Item> getItemsByTitle(String title) {  return repo.findItemByTitleContaining(title); }
+
+    // Get Item by price
+    public List<Item> getItemsByPrice(float price) {  return repo.findItemByPriceContaining(price); }
+
+    // Get Item by price
+    public List<Item> getItemsByGenre(String genre) {  return repo.findItemByGenre(genre); }
+
     //Delete Item by id
     public void deleteItemById(long id) { repo.deleteById(id); }
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-//    List<Item> findItemById(String id);
-
+        List<Item> findItemByTitleContaining(String title);
+        List<Item> findItemByPriceContaining(float price);
+        List<Item> findItemByGenre(String genre);
 }
