@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import static com.group4.orderSystem.security.ApplicationUserRole.*;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -40,9 +41,34 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .addFilter(new CustomAuthFilter(authenticationManagerBean()))
                 .authorizeRequests()
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/order/*", "/orders",
-                        "/items/*", "/items").permitAll()
-                .antMatchers("/*").hasRole(BUYER.name())
+                // ALL ACCESS
+                .antMatchers("index", "/css/*", "/js/*", "/register","/order/*", "/orders",
+                        "/items/*", "/items", "/", "/login").permitAll()
+                // ADMIN ACCESS
+                // Users
+                .antMatchers(GET, "/users/**").hasRole(ADMIN.name())
+                .antMatchers(POST, "/users").hasRole(ADMIN.name())
+                // Items
+                .antMatchers(POST, "/items/*").hasAnyRole(ADMIN.name())
+                .antMatchers(PUT, "/items/*").hasAnyRole(ADMIN.name())
+                .antMatchers(DELETE, "/items/*").hasAnyRole(ADMIN.name())
+                // Orders
+                .antMatchers(GET, "/orders").hasRole(ADMIN.name())
+                .antMatchers(PUT, "/order/*").hasRole(ADMIN.name())
+                .antMatchers(DELETE, "/order/*").hasRole(ADMIN.name())
+
+                // BUYER ACCESS
+                // Users
+                .antMatchers(GET, "/users/**").hasRole(BUYER.name())
+
+                // Orders
+                .antMatchers(GET, "/order/*").hasRole(BUYER.name())
+                .antMatchers(POST, "/order/*").hasRole(BUYER.name())
+                .antMatchers(PUT, "/order/*").hasRole(BUYER.name())
+                .antMatchers(DELETE, "/order/*").hasRole(BUYER.name())
+
+
+
                 .anyRequest()
                 .authenticated()
                 .and()
