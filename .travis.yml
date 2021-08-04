@@ -3,3 +3,6 @@ language: java
 jdk: openjdk16
 before_install:
   - mvn clean install
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS game_online_ordering;'
+services:
+  - mysql
