@@ -4,3 +4,4 @@ language: java
 jdk: openjdk16
 before_install:
   - mvn clean install
+  - chmod +x mvnw
