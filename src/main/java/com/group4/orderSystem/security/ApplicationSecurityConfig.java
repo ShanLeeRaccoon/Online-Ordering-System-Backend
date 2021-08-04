@@ -43,11 +43,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // ALL ACCESS
                 .antMatchers("index", "/css/*", "/js/*", "/register","/order/*", "/orders",
-                        "/items/*", "/items", "/", "/login").permitAll()
+                        "/items/*", "/items", "/", "/login", "/users").permitAll()
                 // ADMIN ACCESS
                 // Users
-                .antMatchers(GET, "/users/**").hasRole(ADMIN.name())
-                .antMatchers(POST, "/users").hasRole(ADMIN.name())
+//                .antMatchers(GET, "/users/**").hasRole(ADMIN.name())
+//                .antMatchers(GET, "/users").permitAll()
+//                .antMatchers(POST, "/users").hasRole(ADMIN.name())
                 // Items
                 .antMatchers(POST, "/items/*").hasAnyRole(ADMIN.name())
                 .antMatchers(PUT, "/items/*").hasAnyRole(ADMIN.name())
