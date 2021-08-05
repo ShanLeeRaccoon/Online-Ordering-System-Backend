@@ -3,6 +3,7 @@ package com.group4.orderSystem.services;
 import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.models.User;
 import com.group4.orderSystem.repository.UserRepository;
+import com.group4.orderSystem.security.ApplicationUserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class UserService implements UserDetailsService {
     public User getUserById(Long id) { return repo.findById(id).get(); };
 
     public User save(User user) {
+        user.setAppUserRole(ApplicationUserRole.BUYER);
         repo.save(user);
         return user;
     }
