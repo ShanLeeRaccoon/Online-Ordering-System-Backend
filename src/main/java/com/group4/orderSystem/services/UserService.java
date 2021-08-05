@@ -1,5 +1,6 @@
 package com.group4.orderSystem.services;
 
+import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.models.User;
 import com.group4.orderSystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,10 @@ public class UserService implements UserDetailsService {
     // Get a user by Id
     public User getUserById(Long id) { return repo.findById(id).get(); };
 
+    public User save(User user) {
+        repo.save(user);
+        return user;
+    }
 
     public String registerUser(User user){
         boolean userExist = repo
