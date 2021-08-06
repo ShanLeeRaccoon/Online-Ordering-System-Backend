@@ -1,3 +1,7 @@
+sudo: required
+dist: trusty
 language: java
-jdk:
-  -oraclejdk10
+jdk: openjdk16
+before_install:
+  - mvn clean install
+  - chmod +x mvnw
