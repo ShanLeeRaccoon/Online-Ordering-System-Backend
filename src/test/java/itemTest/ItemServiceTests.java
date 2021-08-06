@@ -39,9 +39,10 @@ public class ItemServiceTests {
     private ItemService service;
 
     @Test
-    public void whenSaveCustomer_shouldReturnCustomer() {
+    public void whenSaveItem_shouldReturnItem() {
         Item item = new Item();
         item.setTitle("Test Name");
+        item.setId(1L);
 
         when(itemRepository.save(ArgumentMatchers.any(Item.class))).thenReturn(item);
 
@@ -56,6 +57,20 @@ public class ItemServiceTests {
         service.listAllItems();
         verify(itemRepository).findAll();
     }
+
+//    @Test
+//    public void canGetItemById(){
+//        Item item = new Item();
+//        item.setTitle("Test Name");
+//        item.setId(727L);
+//
+//        when(itemRepository.save(ArgumentMatchers.any(Item.class))).thenReturn(item);
+//
+//        Item created = service.save(item);
+//        Item found = service.getItemById(727L);
+//
+//        assertEquals(created.getTitle(), found.getTitle());
+//    }
 
     @Test
     public void canGetItemsByTitle(){
@@ -80,6 +95,5 @@ public class ItemServiceTests {
         service.deleteItemById(item.getId());
         verify(itemRepository).deleteById(item.getId());
     }
-
 
 }
