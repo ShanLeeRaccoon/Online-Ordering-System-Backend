@@ -1,5 +1,11 @@
 package com.group4.orderSystem.security;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public enum ApplicationUserPermission {
     ITEM_READ("item:read"),
     ITEM_WRITE("item:write"),
@@ -12,7 +18,7 @@ public enum ApplicationUserPermission {
         this.permission = permission;
     }
 
-    public String getPermission() {
+    public String getPermissions() {
         return permission;
     }
 }

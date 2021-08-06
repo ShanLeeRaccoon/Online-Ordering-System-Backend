@@ -1,9 +1,13 @@
 package com.group4.orderSystem.security;
 
+import com.group4.orderSystem.filters.CustomAuthFilter;
 import com.group4.orderSystem.services.UserService;
+import org.hibernate.StatelessSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import static com.group4.orderSystem.security.ApplicationUserRole.*;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -32,10 +37,48 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/users", "/users/*", "/order/*", "/orders",
-                        "/items/*", "/items")
-                .permitAll().antMatchers("/*").hasRole(BUYER.name()).anyRequest().authenticated().and().formLogin();
+        http
+                .csrf().disable()
+                .addFilter(new CustomAuthFilter(authenticationManagerBean()))
+                .authorizeRequests()
+                // ALL ACCESS
+                .antMatchers("index", "/css/*", "/js/*", "/register","/order/*", "/orders",
+                        "/items/*", "/items", "/", "/login", "/users").permitAll()
+                // ADMIN ACCESS
+                // Users
+//                .antMatchers(GET, "/users/**").hasRole(ADMIN.name())
+//                .antMatchers(GET, "/users").permitAll()
+//                .antMatchers(POST, "/users").hasRole(ADMIN.name())
+                // Items
+                .antMatchers(POST, "/items/*").hasAnyRole(ADMIN.name())
+                .antMatchers(PUT, "/items/*").hasAnyRole(ADMIN.name())
+                .antMatchers(DELETE, "/items/*").hasAnyRole(ADMIN.name())
+                // Orders
+                .antMatchers(GET, "/orders").hasRole(ADMIN.name())
+                .antMatchers(PUT, "/order/*").hasRole(ADMIN.name())
+                .antMatchers(DELETE, "/order/*").hasRole(ADMIN.name())
+
+                // BUYER ACCESS
+                // Users
+                .antMatchers(GET, "/users/**").hasRole(BUYER.name())
+
+                // Orders
+                .antMatchers(GET, "/order/*").hasRole(BUYER.name())
+                .antMatchers(POST, "/order/*").hasRole(BUYER.name())
+                .antMatchers(PUT, "/order/*").hasRole(BUYER.name())
+                .antMatchers(DELETE, "/order/*").hasRole(BUYER.name())
+
+
+
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin();
+    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -51,13 +94,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    @Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails user1 = User.builder().username("user1").password(passwordEncoder.encode("password"))
-                .roles(ApplicationUserRole.BUYER.name()).build();
-        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin"))
-                .roles(ApplicationUserRole.ADMIN.name()).build();
-        return new InMemoryUserDetailsManager(user1, admin);
-    }
+//    @Override
+//    @Bean
+//    protected UserDetailsService userDetailsService() {
+//        UserDetails user1 = User.builder().username("user1").password(passwordEncoder.encode("password"))
+//                .roles(ApplicationUserRole.BUYER.name()).build();
+//        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin"))
+//                .roles(ApplicationUserRole.ADMIN.name()).build();
+//        return new InMemoryUserDetailsManager(user1, admin);
+//    }
 }
