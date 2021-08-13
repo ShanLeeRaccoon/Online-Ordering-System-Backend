@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
 
         repo.save(user);
-        return "Ok";
+        return "Successfully Registered";
     }
 
     @Override
