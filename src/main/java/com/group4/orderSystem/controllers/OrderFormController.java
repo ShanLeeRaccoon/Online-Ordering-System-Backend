@@ -1,5 +1,6 @@
 package com.group4.orderSystem.controllers;
 
+import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.models.OrderForm;
 import com.group4.orderSystem.services.OrderFormService;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,14 @@ public class OrderFormController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    //    Get order by user id
+    @GetMapping("/orders/user={id}")
+    public List<OrderForm> getOrdersByUser(@PathVariable Long id) { return service.getOrderByUser(id); }
+
+    //    Get order by item id
+    @GetMapping("/orders/item={id}")
+    public List<OrderForm> getOrdersByItem(@PathVariable Long id) { return service.getOrderByItem(id); }
 
 //    Post new order
     @PostMapping("/orders")
