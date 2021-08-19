@@ -19,4 +19,9 @@ public class RegistrationController {
     public String register(@RequestBody RegistrationRequest request) {
         return service.register(request);
     }
+
+    @PostMapping("/admin")
+    public String registerAdmin(@RequestBody RegistrationRequest request) {
+        return service.registerAdmin(request);
+    }
 }
