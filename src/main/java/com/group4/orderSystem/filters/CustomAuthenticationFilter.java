@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.SignatureGenerationException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.group4.orderSystem.misc.AuthUtility;
 import com.group4.orderSystem.models.User;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
@@ -53,23 +54,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User)authentication.getPrincipal();
 
-        Dotenv dotenv = Dotenv.load();
-        String secret = dotenv.get("SECRET");
+        int tokenExpiration = new AuthUtility().TOKEN_EXPIRATION_DURATION;
+        String secret = new AuthUtility().getSecretString();
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 60*60*1000*727000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpiration))
                 .withIssuer(request.getRequestURI().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 60*60*1000*727000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpiration))
                 .withIssuer(request.getRequestURI().toString())
                 .sign(algorithm);
-//        response.setHeader("accessToken", accessToken);
-//        response.setHeader("refreshToken", refreshToken);
+
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
         tokens.put("refreshToken", refreshToken);

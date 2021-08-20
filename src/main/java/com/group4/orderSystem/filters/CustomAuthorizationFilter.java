@@ -1,11 +1,9 @@
 package com.group4.orderSystem.filters;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.cdimascio.dotenv.Dotenv;
+import com.group4.orderSystem.controllers.UserController;
+import com.group4.orderSystem.misc.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.group4.orderSystem.misc.AuthUtility.getAuthException;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -37,13 +36,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = httpServletRequest.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
                 try {
-                    Dotenv dotenv = Dotenv.load();
-                    String secret = dotenv.get("SECRET");
-                    String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-                    JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = verifier.verify(token);
+                    DecodedJWT decodedJWT = new AuthUtility().getDecodedJWT(authorizationHeader);
                     String username = decodedJWT.getSubject();
+
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
@@ -55,14 +50,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 }
                 catch (Exception exception){
                     log.error("Error Logging In: {}", exception.getMessage());
-                    httpServletResponse.setHeader("error", exception.getMessage());
-                    httpServletResponse.setStatus(FORBIDDEN.value());
-//                    httpServletResponse.sendError(FORBIDDEN.value());
-                    Map<String, String> error = new HashMap<>();
-                    error.put("error_msg", exception.getMessage());
-                    httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
-
-                    new ObjectMapper().writeValue(httpServletResponse.getOutputStream(), error);
+                    getAuthException(httpServletResponse, exception);
                 }
 
             }else {

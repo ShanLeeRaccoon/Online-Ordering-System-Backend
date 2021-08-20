@@ -42,13 +42,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 // ALL ACCESS
-                .antMatchers("index", "/css/*", "/js/*", "/register", "/register/admin",
-                        "/login", "/users", "/auth/login", "/token/refresh/**" ).permitAll()
+                .antMatchers("index", "/css/*", "/js/*", "/register",
+                        "/login", "/auth/login", "/token/refresh/**" ).permitAll()
                 // ADMIN ACCESS
                 // Users
                 .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
                 .antMatchers(GET, "/users").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
+                .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
                 // Items
                 .antMatchers(POST, "/items/*").hasAnyAuthority("ADMIN")
                 .antMatchers(PUT, "/items/*").hasAnyAuthority("ADMIN")
