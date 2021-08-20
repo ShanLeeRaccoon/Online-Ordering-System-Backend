@@ -71,15 +71,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .anyRequest()
                 .authenticated();
-
-//                .and()
-//                .formLogin()
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/items", true)
-//                .and()
-//                .logout()
-//                .logoutUrl("/perform_logout")
-//                .deleteCookies("JSESSIONID");
     }
     @Bean
     @Override

@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group4.orderSystem.models.User;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,11 +52,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User)authentication.getPrincipal();
-        // TODO: Change secret string to a secure format
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+
+        Dotenv dotenv = Dotenv.load();
+        String secret = dotenv.get("SECRET");
+        Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60*60*1000*727000))
                 .withIssuer(request.getRequestURI().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
