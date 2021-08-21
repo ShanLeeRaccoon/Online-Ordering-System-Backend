@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AuthUtility {
-    public final int TOKEN_EXPIRATION_DURATION = 10*10*72700000;
+    public final int TOKEN_EXPIRATION_DURATION = 1000000000;
 
     public String getSecretString(){
         Dotenv dotenv = Dotenv.load();
