@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group4.orderSystem.misc.AuthUtility;
 import com.group4.orderSystem.models.User;
 import com.group4.orderSystem.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping
 public class UserController {
 
+    @Autowired
     private UserService service;
 
     //Get all users
