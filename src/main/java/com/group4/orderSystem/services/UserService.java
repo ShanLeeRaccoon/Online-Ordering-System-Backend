@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +32,8 @@ public class UserService implements UserDetailsService {
 
     // Get a user by Id
     public User getUserById(Long id) { return repo.findById(id).get(); };
+
+    public User getUser(String email) { return repo.findByEmail(email).get(); };
 
     public User save(User user) {
         user.setAppUserRole(ApplicationUserRole.BUYER);
@@ -49,7 +52,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
 
         repo.save(user);
-        return "Ok";
+        return "Successfully Registered";
     }
 
     @Override
@@ -57,4 +60,17 @@ public class UserService implements UserDetailsService {
         return repo.findByEmail(email)
                 .orElseThrow(()->new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+//        User user = repo.findUserByUsername(name);
+//        if (user == null)
+//            throw new UsernameNotFoundException("Bad credentials");
+//
+//        return new User(
+//                user.getUsername(),
+//                user.getPassword(),
+//                user.getAppUserRole()
+//        );
+//    }
 }

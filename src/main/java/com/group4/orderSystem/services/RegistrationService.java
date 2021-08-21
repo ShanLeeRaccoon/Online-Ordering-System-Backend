@@ -31,4 +31,21 @@ public class RegistrationService {
         );
 
     }
+
+    public String registerAdmin(RegistrationRequest request) {
+        boolean isValidEmail = validator.test(request.getEmail());
+        if (!isValidEmail){
+            throw new IllegalStateException("Email not valid");
+        }
+        return service.registerUser(
+                new User(
+                        request.getEmail(),
+                        request.getName(),
+                        request.getUsername(),
+                        request.getPassword(),
+                        ApplicationUserRole.ADMIN
+                )
+        );
+
+    }
 }
