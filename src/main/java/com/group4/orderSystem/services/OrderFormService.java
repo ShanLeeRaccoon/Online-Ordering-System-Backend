@@ -1,5 +1,6 @@
 package com.group4.orderSystem.services;
 
+import com.group4.orderSystem.models.Item;
 import com.group4.orderSystem.models.OrderForm;
 import com.group4.orderSystem.repository.OrderFormRepository;
 import org.aspectj.weaver.ast.Or;
@@ -26,7 +27,13 @@ public class OrderFormService {
 //    Get order by id
     public OrderForm getOrderById(Long id) { return repo.findById(id).get();}
 
-//    Post a new order to database
+    // Get order by user id
+    public List<OrderForm> getOrderByUser(Long id) {  return repo.findOrdersByUserId(id); }
+
+    // Get order by item id
+    public List<OrderForm> getOrderByItem(Long id) {  return repo.findOrdersByItemId(id); }
+
+    //    Post a new order to database
     public OrderForm save(OrderForm order) {
         repo.save(order);
         return order;
