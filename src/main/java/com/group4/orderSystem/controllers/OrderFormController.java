@@ -42,7 +42,7 @@ public class OrderFormController {
     public List<OrderForm> getOrdersByItem(@PathVariable Long id) { return service.getOrderByItem(id); }
 
 //    Post new order
-    @PostMapping("/orders")
+    @PostMapping("/order")
     public void addOrder(@RequestBody OrderForm order) { service.save(order); }
 
 // Delete an order
