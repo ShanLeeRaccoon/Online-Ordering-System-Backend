@@ -17,11 +17,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AuthUtility {
     public final int TOKEN_EXPIRATION_DURATION = 1000000000;
-
+    private final String SECRET = "WHYAREWEDOINGTHISTOOURSELVES";
     public String getSecretString(){
-        Dotenv dotenv = Dotenv.load();
-        String secret = dotenv.get("SECRET");
-        return secret;
+        //        Dotenv dotenv = Dotenv.load();
+//        String secret = dotenv.get("SECRET");
+        return this.SECRET;
     }
 
     public DecodedJWT getDecodedJWT(String authorizationHeader){
