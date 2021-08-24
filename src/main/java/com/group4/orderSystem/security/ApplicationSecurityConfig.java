@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,11 @@ import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder passwordEncoder;
@@ -49,7 +55,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // ADMIN ACCESS
                 // Users
                 .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
-//                .antMatchers(GET, "/users/**").permitAll()
+                .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
                 // Items
@@ -68,7 +74,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // BUYER ACCESS
                 // Users
-//                .antMatchers(GET, "/items").hasAnyAuthority("BUYER")
+                .antMatchers(GET, "/user/**").hasAnyAuthority("BUYER")
                 // Orders
                 .antMatchers(GET, "/orders/**").hasAnyAuthority("BUYER")
                 .antMatchers(GET, "/order/**").hasAnyAuthority("BUYER")
