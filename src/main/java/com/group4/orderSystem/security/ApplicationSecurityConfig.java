@@ -58,7 +58,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Users
 //                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
                 .antMatchers(GET, "/users").permitAll()
-                .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN")
+                .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN","BUYER")
                 .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
                 // Items
@@ -78,7 +78,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // BUYER ACCESS
                 // Users
-                .antMatchers(GET, "/user/**").hasAnyAuthority("BUYER")
                 // Orders
 //                .antMatchers(GET, "/orders/**").hasAnyAuthority("BUYER")
 //                .antMatchers(GET, "/order/**").hasAnyAuthority("BUYER")
