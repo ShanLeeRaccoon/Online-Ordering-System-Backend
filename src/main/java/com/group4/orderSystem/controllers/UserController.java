@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user")
+    @PostMapping("/signup")
     public void addUser(@RequestBody User user) { service.save(user); }
 
     @GetMapping("/token/refresh")
