@@ -54,7 +54,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // ADMIN ACCESS
                 // Users
-                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
+                .antMatchers(GET, "/users").permitAll()
                 .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
