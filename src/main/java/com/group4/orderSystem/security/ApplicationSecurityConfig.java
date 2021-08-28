@@ -38,7 +38,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private final UserService userService;
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
