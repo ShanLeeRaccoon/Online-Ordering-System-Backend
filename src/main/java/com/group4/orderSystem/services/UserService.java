@@ -39,6 +39,8 @@ public class UserService implements UserDetailsService {
 
     public User save(User user) {
         user.setAppUserRole(ApplicationUserRole.BUYER);
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         repo.save(user);
         return user;
     }

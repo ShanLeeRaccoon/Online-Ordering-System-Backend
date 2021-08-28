@@ -12,14 +12,9 @@ import javax.transaction.Transactional;
 @Service
 @AllArgsConstructor
 public class RegistrationService {
-    private final EmailValidator validator;
     private final UserService service;
 
     public String register(RegistrationRequest request) {
-        boolean isValidEmail = validator.test(request.getEmail());
-        if (!isValidEmail){
-            throw new IllegalStateException("Email not valid");
-        }
         return service.registerUser(
                 new User(
                         request.getEmail(),
@@ -33,10 +28,6 @@ public class RegistrationService {
     }
 
     public String registerAdmin(RegistrationRequest request) {
-        boolean isValidEmail = validator.test(request.getEmail());
-        if (!isValidEmail){
-            throw new IllegalStateException("Email not valid");
-        }
         return service.registerUser(
                 new User(
                         request.getEmail(),

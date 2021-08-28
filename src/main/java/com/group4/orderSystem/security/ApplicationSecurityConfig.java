@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import static com.group4.orderSystem.security.ApplicationUserRole.*;
 import static org.springframework.http.HttpMethod.*;
@@ -44,17 +45,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         http
                 .csrf().disable()
+                .cors().and()
                 .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 // ALL ACCESS
                 .antMatchers("index", "/css/*", "/js/*", "/register",
-                        "/login", "/auth/login", "/token/refresh/**" ).permitAll()
+                        "/login", "/auth/login", "/token/refresh/**", "/signup" ).permitAll()
                 .antMatchers(GET, "/items/**").permitAll()
 
                 // ADMIN ACCESS
                 // Users
-                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
+                .antMatchers(GET, "/users").permitAll()
                 .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
                 .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
