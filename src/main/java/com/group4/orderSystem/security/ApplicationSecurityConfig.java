@@ -51,30 +51,30 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // ALL ACCESS
                 .antMatchers("index", "/css/*", "/js/*", "/register",
-                        "/login", "/auth/login", "/token/refresh/**", "/signup" ).permitAll()
+                        "/login", "/auth/login", "/token/refresh/**", "/signup", "/users/**", "/orders/*", "/order/*").permitAll()
                 .antMatchers(GET, "/items/**").permitAll()
 
                 // ADMIN ACCESS
                 // Users
 //                .antMatchers(GET, "/users/**").hasAnyAuthority("ADMIN")
-                .antMatchers(GET, "/users").permitAll()
-                .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN","BUYER")
-                .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
-                .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
+//                .antMatchers(GET, "/users").permitAll()
+//                .antMatchers(GET, "/user/**").hasAnyAuthority("ADMIN","BUYER")
+//                .antMatchers(POST, "/users").hasAnyAuthority("ADMIN")
+//                .antMatchers(POST, "/register/admin").hasAnyAuthority("ADMIN")
                 // Items
-                .antMatchers(POST, "/items/**").hasAnyAuthority("ADMIN")
-                .antMatchers(PUT, "/items/**").hasAnyAuthority("ADMIN")
-                .antMatchers(DELETE, "/items/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(POST, "/items/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(PUT, "/items/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(DELETE, "/items/**").hasAnyAuthority("ADMIN")
 
                 // Orders
-                .antMatchers(GET, "/orders").hasAnyAuthority("ADMIN","BUYER")
-                .antMatchers(GET, "/orders/*").hasAnyAuthority("ADMIN","BUYER")
-                .antMatchers(GET, "/order/*").hasAnyAuthority("ADMIN","BUYER")
-
-                .antMatchers(POST, "/order").hasAnyAuthority("ADMIN","BUYER")
-
-                .antMatchers(PUT, "/order/*").hasAnyAuthority("ADMIN","BUYER")
-                .antMatchers(DELETE, "/order/*").hasAnyAuthority("ADMIN","BUYER")
+//                .antMatchers(GET, "/orders").hasAnyAuthority("ADMIN","BUYER")
+//                .antMatchers(GET, "/orders/*").hasAnyAuthority("ADMIN","BUYER")
+//                .antMatchers(GET, "/order/*").hasAnyAuthority("ADMIN","BUYER")
+//
+//                .antMatchers(POST, "/order").hasAnyAuthority("ADMIN","BUYER")
+//
+//                .antMatchers(PUT, "/order/*").hasAnyAuthority("ADMIN","BUYER")
+//                .antMatchers(DELETE, "/order/*").hasAnyAuthority("ADMIN","BUYER")
 
                 // BUYER ACCESS
                 // Users
